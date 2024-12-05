@@ -1,15 +1,15 @@
 package com.example;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-
 import java.io.File;
 import java.util.List;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
 
 public class App {
     public static void main(String[] args) {
         try {
             // Load the PDF document
-            String pdfPath = "src/main/resources/sample2.pdf";
+            String pdfPath = "src/main/resources/sample7.pdf";
             PDDocument document = PDDocument.load(new File(pdfPath));
 
             // Extract text with positions

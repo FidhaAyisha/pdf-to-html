@@ -7,7 +7,7 @@ import java.util.List;
 public class GeneratePositionedHTML {
     public static void generateHTML(List<ExtractTextWithCoordinates.TextElement> elements, float pageWidth, float pageHeight) {
         StringBuilder html = new StringBuilder();
-        
+
         // Append the HTML header and styles
         html.append("""
             <!DOCTYPE html>
@@ -23,12 +23,12 @@ public class GeneratePositionedHTML {
             </head>
             <body>
         """);
-        
+
         // Append the page container with dynamic width and height
         html.append(String.format("""
                 <div class="page" style="width: %.2fpx; height: %.2fpx;">
             """, pageWidth, pageHeight));
-        
+
         // Add text elements dynamically
         for (ExtractTextWithCoordinates.TextElement element : elements) {
             float normalizedY = pageHeight - element.y; // Flip Y coordinate

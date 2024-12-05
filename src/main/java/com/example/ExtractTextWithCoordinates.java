@@ -1,13 +1,16 @@
 package com.example;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.pdfbox.text.TextPosition;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.ibm.icu.text.Bidi;
 
 public class ExtractTextWithCoordinates extends PDFTextStripper {
     public static class TextElement {
@@ -29,8 +32,11 @@ public class ExtractTextWithCoordinates extends PDFTextStripper {
     @Override
     protected void writeString(String text, List<TextPosition> textPositions) {
         for (TextPosition position : textPositions) {
+            String normalizedText = normalizeText(position.getUnicode());
+            String adjustedText = adjustTextDirection(normalizedText);
+
             textElements.add(new TextElement(
-                position.getUnicode(),
+                adjustedText,
                 position.getXDirAdj(),
                 position.getYDirAdj(),
                 position.getFontSizeInPt()
@@ -42,11 +48,22 @@ public class ExtractTextWithCoordinates extends PDFTextStripper {
         return textElements;
     }
 
+    // Normalize complex scripts and diacritics
+    private String normalizeText(String text) {
+        return Normalizer.normalize(text, Normalizer.Form.NFC);
+    }
+
+    // Adjust text direction for RTL languages
+    private String adjustTextDirection(String text) {
+        Bidi bidi = new Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT);
+        return bidi.writeReordered(Bidi.DO_MIRRORING);
+    }
+
     public static void main(String[] args) {
-        try (PDDocument document = PDDocument.load(new File("src/main/resources/sample2.pdf"))) {
+        try (PDDocument document = PDDocument.load(new File("src/main/resources/sample7.pdf"))) {
             ExtractTextWithCoordinates extractor = new ExtractTextWithCoordinates();
             extractor.setSortByPosition(true);
-            extractor.getText(document); // Extract text with positions
+            extractor.getText(document);
 
             List<TextElement> elements = extractor.getTextElements();
             for (TextElement element : elements) {
@@ -58,4 +75,3 @@ public class ExtractTextWithCoordinates extends PDFTextStripper {
         }
     }
 }
-

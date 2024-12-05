@@ -11,11 +11,26 @@
     </properties>
 
     <dependencies>
+        
+        <!-- PDFBox dependencies -->
         <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
-            <version>2.0.29</version> <!-- Use the latest version -->
-        </dependency>     
+            <version>2.0.32</version> <!-- or the latest version -->
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox-tools</artifactId>
+            <version>2.0.32</version> <!-- or the latest version -->
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>73.2</version>
+        </dependency>
+    
     </dependencies>
 
     <build>
